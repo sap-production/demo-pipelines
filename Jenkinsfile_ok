@@ -1,9 +1,0 @@
-#!/usr/bin/env groovy
-
-node() {
-   stage("OK"){
-       sh 'echo Hello' 
-       sh 'sleep 30' 
-       sh 'echo World'
-    }
-}
