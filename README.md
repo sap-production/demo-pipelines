@@ -1,2 +1,3 @@
 # test-pipelines
-Simple pipelines used for testing
+
+Simple pipelines used for testing.
