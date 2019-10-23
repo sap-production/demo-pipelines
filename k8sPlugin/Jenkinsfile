@@ -21,8 +21,12 @@ podTemplate(containers: [
             container('golang') {
                 stage('Build a Go project') {
                     sh """
+                    # Prepare it
+                    mkdir -p /go/src/github.com/golang
+                    ln -s `pwd` /go/src/github.com/golang/example
+                    cd /go/src/github.com/golang/example/hello
+                    
                     # Build it
-                    cd hello
                     go build hello.go
                     
                     # Run it
