@@ -6,22 +6,28 @@ podTemplate(containers: [
 
     node(POD_LABEL) {
         stage('Get a Maven project') {
-            git 'https://github.com/jenkinsci/kubernetes-plugin.git'
+            git 'https://github.com/apache/maven.git'
             container('maven') {
                 stage('Build a Maven project') {
-                    sh 'mvn -B clean install'
+                    sh """
+                        cd maven-core/src/test/projects/lifecycle-executor/project-basic
+                        mvn -B clean install
+                    """
                 }
             }
         }
 
         stage('Get a Golang project') {
-            git url: 'https://github.com/hashicorp/terraform.git'
+            git url: 'https://github.com/golang/example.git'
             container('golang') {
                 stage('Build a Go project') {
                     sh """
-                    mkdir -p /go/src/github.com/hashicorp
-                    ln -s `pwd` /go/src/github.com/hashicorp/terraform
-                    cd /go/src/github.com/hashicorp/terraform && make core-dev
+                    # Build it
+                    cd hello
+                    go build hello.go
+                    
+                    # Run it
+                    ./hello
                     """
                 }
             }
