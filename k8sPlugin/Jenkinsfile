@@ -6,11 +6,10 @@ podTemplate(containers: [
 
     node(POD_LABEL) {
         stage('Get a Maven project') {
-            git 'https://github.com/apache/maven.git'
+            git 'https://github.com/jenkins-docs/simple-java-maven-app.git'
             container('maven') {
                 stage('Build a Maven project') {
                     sh """
-                        cd maven-core/src/test/projects/lifecycle-executor/project-basic
                         mvn -B clean install
                     """
                 }
