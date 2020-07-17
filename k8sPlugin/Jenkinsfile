@@ -4,8 +4,8 @@ podTemplate(
         containerTemplate(
             name: 'maven',
             image: 'maven:3.6.2-jdk-8',
-            runAsUser: 1000,
-            runAsGroup: 1000,
+            runAsUser: '1000',
+            runAsGroup: '1000',
             ttyEnabled: true,
             command: 'tail',
             args: '-f /dev/null',
@@ -13,8 +13,8 @@ podTemplate(
         containerTemplate(
             name: 'golang',
             image: 'golang:1.13.3',
-            runAsUser: 1000,
-            runAsGroup: 1000,
+            runAsUser: '1000',
+            runAsGroup: '1000',
             ttyEnabled: true,
             command: 'tail',
             args: '-f /dev/null',
