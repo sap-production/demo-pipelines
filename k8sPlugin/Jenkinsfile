@@ -1,25 +1,32 @@
 //Inspired by: https://github.com/jenkinsci/kubernetes-plugin/blob/master/README.md#container-group-support
 podTemplate(
-    containers: [
-        containerTemplate(
-            name: 'maven',
-            image: 'maven:3.6.2-jdk-8',
-            runAsUser: '1000',
-            runAsGroup: '1000',
-            ttyEnabled: true,
-            command: 'tail',
-            args: '-f /dev/null',
-        ),
-        containerTemplate(
-            name: 'golang',
-            image: 'golang:1.13.3',
-            runAsUser: '1000',
-            runAsGroup: '1000',
-            ttyEnabled: true,
-            command: 'tail',
-            args: '-f /dev/null',
-        ),
-    ],
+    yaml: '''\
+      apiVersion: v1
+      kind: Pod
+      spec:
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          fsGroup: 1000
+        automountServiceAccountToken: false
+        containers:
+        - name: maven
+          image: maven:3.6.2-jdk-8
+          args:
+          - -f
+          - /dev/null
+          command:
+          - tail
+          tty: true
+        - name: golang
+          image: golang:1.13.3
+          command:
+          - tail
+          args:
+          - -f
+          - /dev/null
+          tty: true
+    '''.stripIndent(),
 ) {
     node(POD_LABEL) {
         stage('Get a Maven project') {
