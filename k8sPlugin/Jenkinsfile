@@ -1,9 +1,38 @@
 //Inspired by: https://github.com/jenkinsci/kubernetes-plugin/blob/master/README.md#container-group-support
-podTemplate(containers: [
-    containerTemplate(name: 'maven', image: 'maven:3.6.2-jdk-8', ttyEnabled: true, command: 'cat'),
-    containerTemplate(name: 'golang', image: 'golang:1.13.3', ttyEnabled: true, command: 'cat')
-  ]) {
-
+podTemplate(
+    yaml: '''\
+      apiVersion: v1
+      kind: Pod
+      spec:
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          fsGroup: 1000
+        automountServiceAccountToken: false
+        containers:
+        - name: maven
+          image: maven:3.6.2-jdk-8
+          args:
+          - -f
+          - /dev/null
+          command:
+          - tail
+        - name: golang
+          image: golang:1.13.3
+          command:
+          - tail
+          args:
+          - -f
+          - /dev/null
+          volumeMounts:
+          - name: golang-cache
+            mountPath: /.cache
+        volumes:
+        - name: golang-cache
+          emptyDir:
+            sizeLimit: 100Mi
+    '''.stripIndent(),
+) {
     node(POD_LABEL) {
         stage('Get a Maven project') {
             git 'https://github.com/jenkins-docs/simple-java-maven-app.git'
@@ -35,6 +64,5 @@ podTemplate(containers: [
                 }
             }
         }
-
     }
 }
