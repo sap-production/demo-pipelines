@@ -26,6 +26,13 @@ podTemplate(
           - -f
           - /dev/null
           tty: true
+          volumeMounts:
+          - name: golang-cache
+            mountPath: /.cache
+        volumes:
+        - name: golang-cache
+          emptyDir:
+            sizeLimit: 100Mi
     '''.stripIndent(),
 ) {
     node(POD_LABEL) {
