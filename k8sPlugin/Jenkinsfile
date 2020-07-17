@@ -17,7 +17,6 @@ podTemplate(
           - /dev/null
           command:
           - tail
-          tty: true
         - name: golang
           image: golang:1.13.3
           command:
@@ -25,7 +24,6 @@ podTemplate(
           args:
           - -f
           - /dev/null
-          tty: true
           volumeMounts:
           - name: golang-cache
             mountPath: /.cache
